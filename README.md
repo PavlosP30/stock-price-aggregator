@@ -1,66 +1,213 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Real-time Stock Price Aggregator
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains a full-stack application built with Laravel for the backend and React for the frontend. The project uses Docker (via Laravel Sail) for containerized development.
 
-## About Laravel
+## Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [Frontend Setup](#frontend-setup)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Troubleshooting](#troubleshooting)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Backend**:
+    - Laravel 10/11 backend with Sail for Docker support.
+    - API endpoints for managing stock data.
+    - Caching implementation for stock data.
 
-## Learning Laravel
+2. **Frontend**:
+    - React-based UI to display stock data.
+    - Visual indicators for stock performance.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. **Database**:
+    - MySQL database containerized with Docker.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+4. **Development Environment**:
+    - Fully containerized using Laravel Sail for consistent development.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Prerequisites
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Before setting up the project, ensure you have the following installed on your machine:
 
-### Premium Partners
+- **Docker**: [Install Docker](https://docs.docker.com/get-docker/)
+- **Node.js**: [Install Node.js](https://nodejs.org/) (for frontend setup)
+- **Composer**: [Install Composer](https://getcomposer.org/)
+- **Git**: [Install Git](https://git-scm.com/)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## Setup Instructions
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Backend Setup (Laravel)
 
-## Code of Conduct
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/PavlosP30/stock-price-aggregator.git
+   cd stock-price-aggregator
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Install Laravel Sail**:
+   Run the following command to install Sail:
+   ```bash
+   composer require laravel/sail --dev
+   ```
 
-## Security Vulnerabilities
+3. **Build and Start Docker Containers**:
+   Start the application using Laravel Sail:
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. **Run Migrations**:
+   Create the database tables using:
+   ```bash
+   ./vendor/bin/sail artisan migrate
+   ```
 
-## License
+5. **Seed the Database**:
+   Seed the `stocks` table:
+   ```bash
+   ./vendor/bin/sail artisan db:seed --class=StockSeeder
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. **Set Up Environment Variables**:
+   Copy the example environment file and update as needed (including the ALPHA_VANTAGE_API_KEY):
+   ```bash
+   cp .env.example .env
+   ```
+
+7. **Install Dependencies**:
+   Install Laravel dependencies:
+   ```bash
+   ./vendor/bin/sail composer install
+   ```
+
+---
+
+### Frontend Setup (React)
+
+1. **Navigate to the Frontend Directory**:
+   ```bash
+   cd frontend
+   ```
+
+2. **Install Node Modules**:
+   ```bash
+   npm install
+   ```
+
+3. **Start the Development Server**:
+   ```bash
+   npm start
+   ```
+   The React app will start on `http://localhost:3000`.
+
+---
+
+## Running the Application
+
+### Using Laravel Sail
+Start all containers using Laravel Sail:
+```bash
+./vendor/bin/sail up -d
+```
+
+Access the application:
+
+- **API**: `http://localhost`
+- **Frontend**: `http://localhost:3000`
+
+---
+
+## Testing
+
+### Run Backend Tests
+1. **Prepare the Test Environment**:
+   Ensure the `testing` database is properly configured in `.env.testing`.
+
+2. **Run the Tests**:
+   ```bash
+   ./vendor/bin/sail artisan test
+   ```
+
+---
+
+## Documentation
+
+### API Endpoints
+1. **Get Latest Stock Prices**:
+   ```
+   GET /api/reports/stocks
+   ```
+    - Fetches all time-series data for all stocks.
+
+2. **Get Latest Stock Prices**:
+   ```
+   GET /reports/stocks/{symbol}
+   ```
+    - Fetches all time-series data for the specified stock symbol.
+
+---
+
+### Caching Implementation
+- **Duration**: Stock data is cached for 1 minute.
+
+---
+
+### Cron Job Setup
+
+To ensure the `stocks:fetch` command runs automatically every minute, set up a cron job on your server:
+
+1. Open the crontab editor:
+   ```bash
+   crontab -e
+
+2. Add the following line to the crontab file:
+   ```bash
+   * * * * * /path/to/php /path/to/your-project/artisan schedule:run >> /dev/null 2>&1
+
+3. Save and exit the editor. Verify the cron job is active:
+    ```bash
+   crontab -l
+   
+---
+
+### Docker Services
+- **PHP and Laravel**: `http://localhost`
+- **MySQL**: Managed via Docker and accessible only internally.
+
+---
+
+## Troubleshooting
+
+1. **Container Issues**:
+    - Restart all containers:
+      ```bash
+      ./vendor/bin/sail down
+      ./vendor/bin/sail up -d
+      ```
+
+2. **Database Connection Issues**:
+    - Ensure the `.env` file has the correct database configuration.
+
+3. **Frontend Not Loading**:
+    - Check that the React development server is running:
+      ```bash
+      npm start
+      ```
+
+4. **API Not Responding**:
+    - Check that Laravel Sail is running:
+      ```bash
+      ./vendor/bin/sail up -d
+      ```
+
+---
